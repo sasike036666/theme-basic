@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>商品文档下载 | 产品资料</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#3b82f6;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    html,body{height:100%; margin:0; background:linear-gradient(180deg,var(--bg),#071127); color:#e6eef9;}
+    .wrap{max-width:980px; margin:36px auto; padding:28px;}
+    header{display:flex; align-items:center; gap:16px; margin-bottom:20px;}
+    .logo{
+      width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--accent),#7dd3fc);
+      display:flex; align-items:center; justify-content:center; color:#04293a; font-weight:700; font-size:20px;
+      box-shadow: 0 6px 20px rgba(11,20,32,0.6);
+    }
+    h1{margin:0; font-size:20px;}
+    p.lead{margin:6px 0 0; color:var(--muted); font-size:14px;}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:18px;}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px; padding:16px; box-shadow: 0 4px 18px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03);
+    }
+    .title-row{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .doc-title{font-weight:600; font-size:15px;}
+    .meta{color:var(--muted); font-size:13px; margin-top:8px;}
+    .actions{margin-top:14px; display:flex; gap:10px; align-items:center;}
+    a.btn{
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:8px 12px; border-radius:8px;
+      background:linear-gradient(180deg,var(--accent), #2563eb); color:white; font-weight:600; box-shadow: 0 6px 18px rgba(37,99,235,0.18);
+    }
+    a.link{color:var(--accent); text-decoration:none; font-weight:600; font-size:13px;}
+    .size{color:var(--muted); font-size:13px;}
+    footer{margin-top:28px; color:var(--muted); font-size:13px;}
+    @media (max-width:420px){ .logo{width:52px;height:52px;font-size:18px} }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header>
+      <div class="logo">TKD</div>
+      <div>
+        <h1>产品资料下载</h1>
+        <p class="lead">使用说明都在压缩包里。</p>
+      </div>
+    </header>
+
+    <section aria-label="文档列表" class="grid" id="docs">
+
+      <!-- 产品手册 -->
+      <article class="card" data-href="/manual.pdf" data-name="产品手册 - 中文" data-filename="manual.pdf">
+        <div class="title-row">
+          <div class="doc-title">主机11.30</div>
+          <div class="size" aria-hidden="true">—</div>
+        </div>
+        <div class="meta">主机11.30</div>
+        <div class="actions">
+          <a class="btn" href="./zhuji11.30.rar" download target="_blank" rel="noopener">下载</a>
+          <a class="link" href="./zhuji11.30.rar" target="_blank" rel="noopener">在新页打开</a>
+        </div>
+      </article>
+
+      <!-- 固件包 -->
+      <article class="card" data-href="/firmware.bin" data-name="固件 v1.2.3" data-filename="firmware.bin">
+        <div class="title-row">
+          <div class="doc-title">副机11.30</div>
+          <div class="size" aria-hidden="true">—</div>
+        </div>
+        <div class="meta">11.30</div>
+        <div class="actions">
+          <a class="btn" href="./fuji11.30.rar" download target="_blank" rel="noopener">下载</a>
+          <a class="link" href="./fuji11.30.rar" target="_blank" rel="noopener">在新页打开</a>
+        </div>
+      </article>
+
+    </section>
+
+    <footer>
+      
+    </footer>
+  </div>
+
+  <script>
+    async function fetchSize(url){
+      try{
+        const resp = await fetch(url, { method: 'HEAD' });
+        if(!resp.ok) return null;
+        const cl = resp.headers.get('content-length');
+        if(!cl) return null;
+        const size = Number(cl);
+        if(isNaN(size)) return null;
+        if(size < 1024) return size + ' B';
+        if(size < 1024*1024) return (size/1024).toFixed(1) + ' KB';
+        return (size/(1024*1024)).toFixed(2) + ' MB';
+      }catch(e){ return null; }
+    }
+
+    (async function(){
+      const cards = document.querySelectorAll('#docs .card');
+      for(const card of cards){
+        const url = card.getAttribute('data-href');
+        const sizeEl = card.querySelector('.size');
+        const fname = card.getAttribute('data-filename') || url;
+        sizeEl.textContent = '…';
+        const size = await fetchSize(url);
+        sizeEl.textContent = size ? size : fname;
+      }
+    })();
+  </script>
+</body>
+</html>
