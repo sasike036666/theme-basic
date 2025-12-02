@@ -1,124 +1,177 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>商品文档下载 | 产品资料</title>
-  <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --accent:#3b82f6;
-      --glass: rgba(255,255,255,0.03);
-      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    html,body{height:100%; margin:0; background:linear-gradient(180deg,var(--bg),#071127); color:#e6eef9;}
-    .wrap{max-width:980px; margin:36px auto; padding:28px;}
-    header{display:flex; align-items:center; gap:16px; margin-bottom:20px;}
-    .logo{
-      width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--accent),#7dd3fc);
-      display:flex; align-items:center; justify-content:center; color:#04293a; font-weight:700; font-size:20px;
-      box-shadow: 0 6px 20px rgba(11,20,32,0.6);
-    }
-    h1{margin:0; font-size:20px;}
-    p.lead{margin:6px 0 0; color:var(--muted); font-size:14px;}
-    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:18px;}
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px; padding:16px; box-shadow: 0 4px 18px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03);
-    }
-    .title-row{display:flex; justify-content:space-between; align-items:center; gap:10px;}
-    .doc-title{font-weight:600; font-size:15px;}
-    .meta{color:var(--muted); font-size:13px; margin-top:8px;}
-    .actions{margin-top:14px; display:flex; gap:10px; align-items:center;}
-    a.btn{
-      display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:8px 12px; border-radius:8px;
-      background:linear-gradient(180deg,var(--accent), #2563eb); color:white; font-weight:600; box-shadow: 0 6px 18px rgba(37,99,235,0.18);
-    }
-    a.link{color:var(--accent); text-decoration:none; font-weight:600; font-size:13px;}
-    .size{color:var(--muted); font-size:13px;}
-    footer{margin-top:28px; color:var(--muted); font-size:13px;}
-    @media (max-width:420px){ .logo{width:52px;height:52px;font-size:18px} }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKD 下载中心</title>
+
+<style>
+/* -----------------------------------------------
+   背景风格（科技噪点 + 深色）
+------------------------------------------------ */
+body {
+    margin: 0;
+    padding: 40px 0;
+    background: #0a0f1a;
+    color: white;
+    font-family: "Segoe UI", sans-serif;
+
+    display: flex;
+    justify-content: center; /* 🔥页面整体居中 */
+}
+
+.wrapper {
+    max-width: 1000px;   /* 🔥限制最大宽度，使内容居中紧凑 */
+    width: 90%;
+}
+
+/* 背景噪点 + 光效 */
+body {
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(0,120,255,0.12), transparent 60%),
+        radial-gradient(circle at 80% 60%, rgba(0,160,255,0.15), transparent 70%),
+        url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+/* -----------------------------------------------
+   顶部 Logo + 标题 （居中）
+------------------------------------------------ */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 🔥标题居中 */
+    margin-bottom: 45px;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.logo-img {
+    height: 80px;
+    filter: drop-shadow(0 0 8px #1ecbff);
+    margin-right: 14px;
+}
+
+.title-box h1 {
+    font-size: 32px;
+    margin: 0 0 6px;
+    color: #6fe5ff;
+    text-shadow: 0 0 10px #1ecbff;
+}
+
+.title-box p {
+    margin: 0;
+    color: #9bbcd1;
+}
+
+
+/* -----------------------------------------------
+   卡片布局（居中）
+------------------------------------------------ */
+.card-box {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center; /* 🔥卡片居中 */
+}
+
+.card {
+    background: rgba(20, 30, 50, 0.65);
+    padding: 25px;
+    border-radius: 14px;
+    width: 300px;  /* 固定卡片宽度更整齐 */
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(0, 180, 255, 0.25);
+    box-shadow: 0 0 12px rgba(0, 180, 255, 0.15);
+}
+
+/* 发光标题 */
+.card-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #66d9ff;
+    text-shadow: 0 0 6px #1ecbff;
+}
+
+/* 描述文字 */
+.card-desc {
+    font-size: 13px;
+    color: #9ab4c7;
+    margin-bottom: 20px;
+}
+
+/* -----------------------------------------------
+   按钮（科技蓝发光）
+------------------------------------------------ */
+.btn {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    margin-right: 10px;
+
+    background: linear-gradient(90deg, #1ca6ff, #3ed7ff);
+    box-shadow: 0 0 10px #1ecbff;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px #53e0ff;
+}
+
+/* 次级按钮 */
+.btn-secondary {
+    background: rgba(35, 50, 70, 0.8);
+    box-shadow: none;
+    border: 1px solid rgba(0,150,255,0.4);
+}
+
+.btn-secondary:hover {
+    border-color: #5fd4ff;
+    box-shadow: 0 0 10px rgba(0,150,255,0.4);
+}
+</style>
 </head>
 <body>
-  <div class="wrap" role="main">
-    <header>
-      <div class="logo">TKD</div>
-      <div>
-        <h1>产品资料下载 最新日期12.1</h1>
-        <p class="lead">使用说明都在压缩包里。</p>
-      </div>
-    </header>
 
-    <section aria-label="文档列表" class="grid" id="docs">
+<div class="wrapper">
 
-      <!-- 产品手册 -->
-      <article class="card" data-href="/manual.pdf" data-name="产品手册" data-filename="主机">
-        <div class="title-row">
-          <div class="doc-title">主机</div>
-          <div class="size" aria-hidden="true">—</div>
+    <!-- 顶部区域 -->
+    <div class="header">
+        <img src="tkd-logo.png" class="logo-img" alt="TKD Logo">
+        <div class="title-box">
+            <h1>TKD 下载中心 最新日期12.1
+            </h1>
+            <p></p>
         </div>
-        <div class="meta">主机</div>
-        <div class="actions">
-          <a class="btn" href="./zhuji12.1.rar" download target="_blank" rel="noopener">下载</a>
-          <a class="link" href="./zhuji12.1.rar" target="_blank" rel="noopener">在新页打开</a>
+    </div>
+
+
+    <!-- 卡片区域 -->
+    <div class="card-box">
+
+        <!-- 产品手册 -->
+        <div class="card">
+            <div class="card-title">主机</div>
+            <div class="card-desc">主机</div>
+            <a href="./zhuji12.1.rar" class="btn">下载</a>
+            <a href="./zhuji12.1.rar" class="btn btn-secondary" target="_blank">在新页打开</a>
         </div>
-      </article>
 
-      <!-- 固件包 -->
-      <article class="card" data-href="/firmware.bin" data-name="产品手册" data-filename="副机">
-        <div class="title-row">
-          <div class="doc-title">副机</div>
-          <div class="size" aria-hidden="true">—</div>
+        <!-- 固件 -->
+        <div class="card">
+            <div class="card-title">副机</div>
+            <div class="card-desc">副机</div>
+            <a href="./fuji12.1.rar" class="btn">下载</a>
+            <a href="./fuji12.1.rar" class="btn btn-secondary" target="_blank">在新页打开</a>
         </div>
-        <div class="meta">副机</div>
-        <div class="actions">
-          <a class="btn" href="./fuji12.1.rar" download target="_blank" rel="noopener">下载</a>
-          <a class="link" href="./fuji12.1.rar" target="_blank" rel="noopener">在新页打开</a>
-        </div>
-      </article>
 
-    </section>
+    </div>
 
-    <footer>
-      
-    </footer>
-  </div>
+</div>
 
-  <script>
-    async function fetchSize(url){
-      try{
-        const resp = await fetch(url, { method: 'HEAD' });
-        if(!resp.ok) return null;
-        const cl = resp.headers.get('content-length');
-        if(!cl) return null;
-        const size = Number(cl);
-        if(isNaN(size)) return null;
-        if(size < 1024) return size + ' B';
-        if(size < 1024*1024) return (size/1024).toFixed(1) + ' KB';
-        return (size/(1024*1024)).toFixed(2) + ' MB';
-      }catch(e){ return null; }
-    }
-
-    (async function(){
-      const cards = document.querySelectorAll('#docs .card');
-      for(const card of cards){
-        const url = card.getAttribute('data-href');
-        const sizeEl = card.querySelector('.size');
-        const fname = card.getAttribute('data-filename') || url;
-        sizeEl.textContent = '…';
-        const size = await fetchSize(url);
-        sizeEl.textContent = size ? size : fname;
-      }
-    })();
-  </script>
 </body>
 </html>
-
-
-
-
-
-
