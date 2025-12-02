@@ -2,171 +2,169 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TKD 下载中心</title>
-
 <style>
-/* -----------------------------------------------
-   背景风格（科技噪点 + 深色）
------------------------------------------------- */
-body {
-    margin: 0;
-    padding: 40px 0;
-    background: #0a0f1a;
-    color: white;
-    font-family: "Segoe UI", sans-serif;
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: radial-gradient(circle at center, #0a0f1f, #05070d 70%);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        overflow: hidden;
+    }
 
-    display: flex;
-    justify-content: center; /* 🔥页面整体居中 */
-}
+    /* 背景动态光线 */
+    .glow-bg {
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, #00c6ff33, #0000);
+        filter: blur(130px);
+        animation: float 10s infinite alternate ease-in-out;
+        z-index: -1;
+    }
 
-.wrapper {
-    max-width: 1000px;   /* 🔥限制最大宽度，使内容居中紧凑 */
-    width: 90%;
-}
+    @keyframes float {
+        from { transform: translate(-100px, -80px); }
+        to   { transform: translate(120px, 100px); }
+    }
 
-/* 背景噪点 + 光效 */
-body {
-    background-image:
-        radial-gradient(circle at 20% 20%, rgba(0,120,255,0.12), transparent 60%),
-        radial-gradient(circle at 80% 60%, rgba(0,160,255,0.15), transparent 70%),
-        url('https://grainy-gradients.vercel.app/noise.svg');
-}
+    /* 居中容器 */
+    .container {
+        text-align: center;
+        animation: fadeIn 1s ease forwards;
+    }
 
-/* -----------------------------------------------
-   顶部 Logo + 标题 （居中）
------------------------------------------------- */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* 🔥标题居中 */
-    margin-bottom: 45px;
-    text-align: center;
-    flex-wrap: wrap;
-}
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
-.logo-img {
-    height: 80px;
-    filter: drop-shadow(0 0 8px #1ecbff);
-    margin-right: 14px;
-}
+    /* LOGO TKD */
+    .logo {
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: 5px;
+        color: #00d1ff;
+        text-shadow: 0 0 20px #00d1ffaa, 0 0 50px #00d1ff55;
+        margin-bottom: 20px;
+    }
 
-.title-box h1 {
-    font-size: 32px;
-    margin: 0 0 6px;
-    color: #6fe5ff;
-    text-shadow: 0 0 10px #1ecbff;
-}
+    .title {
+        font-size: 26px;
+        opacity: 0.9;
+        margin-bottom: 40px;
+    }
 
-.title-box p {
-    margin: 0;
-    color: #9bbcd1;
-}
+    /* 卡片容器 */
+    .cards {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
 
+    /* 卡片 */
+    .card {
+        width: 340px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(0, 225, 255, 0.25);
+        border-radius: 16px;
+        backdrop-filter: blur(20px);
+        padding: 25px;
+        transition: 0.35s;
+        position: relative;
+        box-shadow: 0 0 20px #00c6ff22;
+    }
 
-/* -----------------------------------------------
-   卡片布局（居中）
------------------------------------------------- */
-.card-box {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-    justify-content: center; /* 🔥卡片居中 */
-}
+    /* 卡片悬浮光 */
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 25px #00eaff99, 0 0 80px #00eaff55;
+        border-color: #00eaff;
+    }
 
-.card {
-    background: rgba(20, 30, 50, 0.65);
-    padding: 25px;
-    border-radius: 14px;
-    width: 300px;  /* 固定卡片宽度更整齐 */
-    backdrop-filter: blur(10px);
+    /* 卡片标题 */
+    .card-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #00eaff;
+    }
 
-    border: 1px solid rgba(0, 180, 255, 0.25);
-    box-shadow: 0 0 12px rgba(0, 180, 255, 0.15);
-}
+    .card-sub {
+        color: #ccc;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
 
-/* 发光标题 */
-.card-title {
-    font-size: 20px;
-    margin-bottom: 8px;
-    color: #66d9ff;
-    text-shadow: 0 0 6px #1ecbff;
-}
+    /* 按钮样式 */
+    .btn {
+        display: inline-block;
+        padding: 10px 28px;
+        margin: 6px;
+        border-radius: 30px;
+        border: 1px solid #00eaff;
+        color: #00eaff;
+        text-decoration: none;
+        transition: 0.3s;
+        font-size: 15px;
+        position: relative;
+        overflow: hidden;
+    }
 
-/* 描述文字 */
-.card-desc {
-    font-size: 13px;
-    color: #9ab4c7;
+    .btn:hover {
+        background: #00eaff;
+        color: #000;
+        box-shadow: 0 0 15px #00eaffaa;
+    }
+    .logo img {
+    max-width: 280px;      /* 最大宽度：280px（你可按需求调整） */
+    width: 60%;            /* 相对容器缩放，自动适配大小 */
+    height: auto;          /* 保持比例 */
+    min-width: 160px;      /* 最小宽度，避免过小 */
+    filter: drop-shadow(0 0 20px #00c8ff) drop-shadow(0 0 40px #00eaff);
     margin-bottom: 20px;
+    transition: 0.4s;
 }
 
-/* -----------------------------------------------
-   按钮（科技蓝发光）
------------------------------------------------- */
-.btn {
-    display: inline-block;
-    padding: 9px 18px;
-    border-radius: 8px;
-    font-size: 14px;
-    text-decoration: none;
-    color: white;
-    margin-right: 10px;
-
-    background: linear-gradient(90deg, #1ca6ff, #3ed7ff);
-    box-shadow: 0 0 10px #1ecbff;
-    transition: 0.2s;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px #53e0ff;
-}
-
-/* 次级按钮 */
-.btn-secondary {
-    background: rgba(35, 50, 70, 0.8);
-    box-shadow: none;
-    border: 1px solid rgba(0,150,255,0.4);
-}
-
-.btn-secondary:hover {
-    border-color: #5fd4ff;
-    box-shadow: 0 0 10px rgba(0,150,255,0.4);
+/* Logo 悬浮时轻微亮度提升（科技感） */
+.logo img:hover {
+    filter: drop-shadow(0 0 25px #00eaff) drop-shadow(0 0 55px #00eaff);
 }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
+<div class="glow-bg"></div>
 
-    <!-- 顶部区域 -->
-    <div class="header">
-        <img src="tkd-logo.png" class="logo-img" alt="TKD Logo">
-        <div class="title-box">
-            <h1>TKD 下载中心 最新日期12.1
-            </h1>
-            <p></p>
-        </div>
+<div class="container">
+
+    <div class="logo">
+        <img src="./tkd-logo.png" alt="TKD LOGO">
     </div>
+    <div class="title">最新日期12.1</div>
 
+    <div class="cards">
 
-    <!-- 卡片区域 -->
-    <div class="card-box">
-
-        <!-- 产品手册 -->
+        <!-- 卡片1 -->
         <div class="card">
             <div class="card-title">主机</div>
-            <div class="card-desc">主机</div>
-            <a href="./zhuji12.1.rar" class="btn">下载</a>
-            <a href="./zhuji12.1.rar" class="btn btn-secondary" target="_blank">在新页打开</a>
+            <div class="card-sub">主机</div>
+
+            <a href="./zhuji12.1" class="btn">下载</a>
+            <a href="./zhuji12.1" target="_blank" class="btn">在新页打开</a>
         </div>
 
-        <!-- 固件 -->
+        <!-- 卡片2 -->
         <div class="card">
             <div class="card-title">副机</div>
-            <div class="card-desc">副机</div>
-            <a href="./fuji12.1.rar" class="btn">下载</a>
-            <a href="./fuji12.1.rar" class="btn btn-secondary" target="_blank">在新页打开</a>
+            <div class="card-sub">副机</div>
+
+            <a href="./fuji12.1" class="btn">下载</a>
+            <a href="./fuji12.1" target="_blank" class="btn">在新页打开</a>
         </div>
 
     </div>
