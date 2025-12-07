@@ -2,40 +2,102 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TKD 下载中心</title>
 <style>
+    * {
+        box-sizing: border-box;
+    }
+    
     body {
         margin: 0;
         font-family: "Segoe UI", sans-serif;
         background: radial-gradient(circle at center, #0a0f1f, #05070d 70%);
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         color: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 20px;
+        position: relative;
+    }
+    
+    /* 背景粒子效果 */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
         overflow: hidden;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #00d1ff;
+        border-radius: 50%;
+        opacity: 0.4;
+        animation: particleFloat 15s infinite ease-in-out;
+    }
+    
+    @keyframes particleFloat {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.2;
+        }
+        25% {
+            transform: translate(100px, -100px) scale(1.5);
+            opacity: 0.6;
+        }
+        50% {
+            transform: translate(-50px, 200px) scale(0.8);
+            opacity: 0.4;
+        }
+        75% {
+            transform: translate(150px, 50px) scale(1.2);
+            opacity: 0.5;
+        }
     }
 
     /* 背景动态光线 */
     .glow-bg {
-        position: absolute;
+        position: fixed;
         width: 800px;
         height: 800px;
         background: radial-gradient(circle, #00c6ff33, #0000);
         filter: blur(130px);
         animation: float 10s infinite alternate ease-in-out;
-        z-index: -1;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    .glow-bg:nth-child(2) {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, #7c3aed33, #0000);
+        animation: float 15s infinite alternate ease-in-out reverse;
+        animation-delay: -5s;
     }
 
     @keyframes float {
-        from { transform: translate(-100px, -80px); }
-        to   { transform: translate(120px, 100px); }
+        from { transform: translate(-100px, -80px) scale(1); }
+        to   { transform: translate(120px, 100px) scale(1.2); }
     }
 
     /* 居中容器 */
     .container {
         text-align: center;
         animation: fadeIn 1s ease forwards;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1200px;
     }
 
     @keyframes fadeIn {
@@ -51,12 +113,45 @@
         color: #00d1ff;
         text-shadow: 0 0 20px #00d1ffaa, 0 0 50px #00d1ff55;
         margin-bottom: 20px;
+        animation: logoGlow 3s ease-in-out infinite;
+        position: relative;
+    }
+    
+    @keyframes logoGlow {
+        0%, 100% {
+            text-shadow: 0 0 20px #00d1ffaa, 0 0 50px #00d1ff55;
+            transform: scale(1);
+        }
+        50% {
+            text-shadow: 0 0 30px #00d1ffcc, 0 0 70px #00d1ff88;
+            transform: scale(1.02);
+        }
     }
 
     .title {
         font-size: 26px;
         opacity: 0.9;
         margin-bottom: 40px;
+        animation: fadeIn 1s ease 0.3s both;
+        position: relative;
+    }
+    
+    .title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00d1ff, transparent);
+        animation: titleLine 1.5s ease 0.8s forwards;
+    }
+    
+    @keyframes titleLine {
+        to {
+            width: 200px;
+        }
     }
 
     /* 卡片容器 */
@@ -64,26 +159,89 @@
         display: flex;
         justify-content: center;
         gap: 30px;
+        flex-wrap: wrap;
+        animation: fadeIn 1s ease 0.6s both;
     }
 
     /* 卡片 */
     .card {
         width: 340px;
+        min-width: 280px;
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(0, 225, 255, 0.25);
         border-radius: 16px;
         backdrop-filter: blur(20px);
         padding: 25px;
-        transition: 0.35s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         box-shadow: 0 0 20px #00c6ff22;
+        overflow: hidden;
+        animation: cardSlideIn 0.8s ease both;
+    }
+    
+    .card:nth-child(1) {
+        animation-delay: 0.8s;
+    }
+    
+    .card:nth-child(2) {
+        animation-delay: 1s;
+    }
+    
+    @keyframes cardSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
+        animation: cardRotate 20s linear infinite;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    
+    @keyframes cardRotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .card:hover::before {
+        opacity: 1;
     }
 
     /* 卡片悬浮光 */
     .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 0 25px #00eaff99, 0 0 80px #00eaff55;
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 0 35px #00eaff99, 0 0 100px #00eaff55;
         border-color: #00eaff;
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .card:hover::after {
+        left: 100%;
     }
 
     /* 卡片标题 */
@@ -92,52 +250,181 @@
         margin-bottom: 8px;
         font-weight: 600;
         color: #00eaff;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover .card-title {
+        color: #00d1ff;
+        text-shadow: 0 0 10px rgba(0,240,255,0.5);
+        transform: scale(1.05);
     }
 
     .card-sub {
         color: #ccc;
         margin-bottom: 20px;
         font-size: 14px;
+        position: relative;
+        z-index: 1;
+        transition: color 0.3s ease;
+    }
+    
+    .card:hover .card-sub {
+        color: #fff;
     }
 
     /* 按钮样式 */
     .btn {
         display: inline-block;
-        padding: 10px 28px;
-        margin: 6px;
+        padding: 12px 32px;
+        margin: 8px 6px;
         border-radius: 30px;
-        border: 1px solid #00eaff;
+        border: 2px solid #00eaff;
         color: #00eaff;
         text-decoration: none;
-        transition: 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         font-size: 15px;
+        font-weight: 600;
         position: relative;
         overflow: hidden;
+        z-index: 1;
+        background: transparent;
+        cursor: pointer;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: #00eaff;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+        z-index: -1;
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
     }
 
     .btn:hover {
         background: #00eaff;
         color: #000;
-        box-shadow: 0 0 15px #00eaffaa;
+        box-shadow: 0 0 25px #00eaffaa, 0 0 50px #00eaff66;
+        transform: translateY(-3px) scale(1.05);
+        border-color: #00d1ff;
+    }
+    
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .btn:hover::after {
+        left: 100%;
+    }
+    
+    .btn:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+        position: relative;
+        z-index: 1;
     }
     .logo img {
-    max-width: 280px;      /* 最大宽度：280px（你可按需求调整） */
-    width: 60%;            /* 相对容器缩放，自动适配大小 */
-    height: auto;          /* 保持比例 */
-    min-width: 160px;      /* 最小宽度，避免过小 */
-    filter: drop-shadow(0 0 20px #00c8ff) drop-shadow(0 0 40px #00eaff);
-    margin-bottom: 20px;
-    transition: 0.4s;
-}
+        max-width: 280px;
+        width: 60%;
+        height: auto;
+        min-width: 160px;
+        filter: drop-shadow(0 0 20px #00c8ff) drop-shadow(0 0 40px #00eaff);
+        margin-bottom: 20px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: logoFloat 3s ease-in-out infinite;
+        position: relative;
+        z-index: 1;
+    }
+    
+    @keyframes logoFloat {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            filter: drop-shadow(0 0 20px #00c8ff) drop-shadow(0 0 40px #00eaff);
+        }
+        50% {
+            transform: translateY(-10px) rotate(2deg);
+            filter: drop-shadow(0 0 30px #00eaff) drop-shadow(0 0 60px #00eaff);
+        }
+    }
 
-/* Logo 悬浮时轻微亮度提升（科技感） */
-.logo img:hover {
-    filter: drop-shadow(0 0 25px #00eaff) drop-shadow(0 0 55px #00eaff);
-}
+    /* Logo 悬浮时轻微亮度提升（科技感） */
+    .logo img:hover {
+        filter: drop-shadow(0 0 35px #00eaff) drop-shadow(0 0 70px #00eaff);
+        transform: translateY(-5px) scale(1.05);
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .cards {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .logo img {
+            width: 70%;
+            max-width: 240px;
+        }
+        
+        .title {
+            font-size: 22px;
+        }
+    }
+    
+    /* 滚动条样式 */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 240, 255, 0.3);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 240, 255, 0.5);
+    }
 </style>
 </head>
 <body>
 
+<!-- 背景粒子 -->
+<div class="particles" id="particles"></div>
+
+<!-- 背景动态光线 -->
+<div class="glow-bg"></div>
 <div class="glow-bg"></div>
 
 <div class="container">
@@ -154,8 +441,10 @@
             <div class="card-title">主机</div>
             <div class="card-sub">主机</div>
 
-            <a href="./zhuji12.1.rar" class="btn">下载</a>
-            <a href="./zhuji12.1.rar" target="_blank" class="btn">在新页打开</a>
+            <div class="btn-group">
+                <a href="./zhuji12.1.rar" class="btn" download>下载</a>
+                <a href="./zhuji12.1.rar" target="_blank" class="btn">在新页打开</a>
+            </div>
         </div>
 
         <!-- 卡片2 -->
@@ -163,13 +452,96 @@
             <div class="card-title">副机</div>
             <div class="card-sub">副机</div>
 
-            <a href="./fuji12.1.rar" class="btn">下载</a>
-            <a href="./fuji12.1.rar" target="_blank" class="btn">在新页打开</a>
+            <div class="btn-group">
+                <a href="./fuji12.1.rar" class="btn" download>下载</a>
+                <a href="./fuji12.1.rar" target="_blank" class="btn">在新页打开</a>
+            </div>
         </div>
 
     </div>
 
 </div>
+
+<script>
+    // 创建背景粒子
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    // 卡片进入视口动画
+    function initCardAnimations() {
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    }
+    
+    // 按钮点击波纹效果
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            ripple.style.pointerEvents = 'none';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // 添加波纹动画
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+        initCardAnimations();
+    });
+</script>
 
 </body>
 </html>
