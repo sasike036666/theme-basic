@@ -40,15 +40,9 @@ const scripts = basicInfo.website ? basicInfo.website.script : ''
       </div>
     </div>
 
-    <div class="mt-16 w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div class="grid grid-cols-1 w-full">
-        <div class="flex items-center justify-start h-full gap-x-4">
-          <div class="flex h-screen overflow-y-auto border-t1">
-            <div class="h-screen w-screen border-t1">
-              <slot />
-            </div>
-          </div>
-        </div>
+    <div class="mt-16 w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-[calc(100vh-4rem)]">
+      <div class="w-full">
+        <slot />
       </div>
     </div>
 
@@ -65,6 +59,7 @@ const scripts = basicInfo.website ? basicInfo.website.script : ''
   display: -webkit-box;
   /* 将元素作为弹性伸缩盒子展示 */
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   /* 限制文本行数为 1 行 */
   -webkit-box-orient: vertical;
   /* 设置伸缩盒子为垂直方向 */
