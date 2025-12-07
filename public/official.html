@@ -15,7 +15,9 @@
       --glass: rgba(255,255,255,0.03);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html{
+      scroll-behavior: smooth;
+    }
     body{
       margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background: radial-gradient(800px 300px at 10% 10%, rgba(124,58,237,0.06), transparent),
@@ -23,43 +25,377 @@
                   var(--bg);
       color:#e6eef3;
       -webkit-font-smoothing:antialiased;
+      overflow-x: hidden;
+    }
+    
+    /* 背景动画粒子效果 */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 20s infinite ease-in-out;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      25% { transform: translate(100px, -100px) scale(1.5); opacity: 0.6; }
+      50% { transform: translate(-50px, 200px) scale(0.8); opacity: 0.4; }
+      75% { transform: translate(150px, 50px) scale(1.2); opacity: 0.5; }
     }
     header{
-      display:flex; align-items:center; justify-content:space-between; padding:18px 28px; backdrop-filter: blur(6px);
+      display:flex; align-items:center; justify-content:space-between; padding:18px 28px; backdrop-filter: blur(12px);
       position:sticky; top:0; z-index:50;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-bottom:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+      animation: slideDown 0.6s ease-out;
     }
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{width:44px;height:44px;object-fit:contain;border-radius:8px}
-    .brand h1{font-size:18px;margin:0;letter-spacing:1px}
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    header.scrolled {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .brand{display:flex;align-items:center;gap:12px; transition: transform 0.3s ease;}
+    .brand:hover { transform: scale(1.05); }
+    .brand img{
+      width:44px;height:44px;object-fit:contain;border-radius:8px;
+      transition: all 0.3s ease;
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(2deg); }
+    }
+    .brand h1{
+      font-size:18px;margin:0;letter-spacing:1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShine 3s ease-in-out infinite;
+    }
+    @keyframes textShine {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
     nav{display:flex; gap:18px; align-items:center}
-    nav a{color:var(--muted); text-decoration:none; font-weight:600}
-    .btn{padding:10px 16px;border-radius:10px;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(124,58,237,0.12);border:none;color:#021018}
+    nav a{
+      color:var(--muted); text-decoration:none; font-weight:600;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: rgba(0, 240, 255, 0.1);
+    }
+    nav a:hover::before {
+      width: 80%;
+    }
+    .btn{
+      padding:10px 16px;border-radius:10px;font-weight:700;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(124,58,237,0.12);
+      border:none;color:#021018;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(124,58,237,0.25);
+    }
+    .btn:active {
+      transform: translateY(-1px);
+    }
 
     /* Hero */
-    .hero{max-width:1200px;margin:48px auto 28px;padding:32px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;border:1px solid rgba(255,255,255,0.03)}
-    .kicker{display:inline-block;padding:6px 10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001018;border-radius:999px;font-weight:800;margin-bottom:14px}
-    .title{font-size:34px;line-height:1.02;margin:0 0 12px}
-    .lead{color:var(--muted);margin:0 0 20px}
-    .hero-cta{display:flex;gap:12px}
-    .glass-card{background:var(--glass);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .hero{
+      max-width:1200px;margin:48px auto 28px;padding:32px;border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;
+      border:1px solid rgba(255,255,255,0.03);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+      transition: all 0.3s ease;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .hero:hover {
+      border-color: rgba(0,240,255,0.2);
+      box-shadow: 0 20px 60px rgba(0,240,255,0.1);
+    }
+    .kicker{
+      display:inline-block;padding:6px 10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#001018;border-radius:999px;font-weight:800;margin-bottom:14px;
+      animation: pulse 2s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,240,255,0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(0,240,255,0); }
+    }
+    .title{
+      font-size:34px;line-height:1.02;margin:0 0 12px;
+      background: linear-gradient(90deg, #e6eef3, var(--accent), #e6eef3);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+    .lead{color:var(--muted);margin:0 0 20px; animation: fadeIn 1s ease-out 0.3s both;}
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .hero-cta{display:flex;gap:12px; animation: fadeIn 1s ease-out 0.6s both;}
+    .glass-card{
+      background:var(--glass);padding:18px;border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .glass-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(0,240,255,0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,240,255,0.1);
+    }
 
     /* right panel mock */
-    .mock{height:320px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;flex-direction:column;padding:18px;gap:12px}
+    .mock{
+      height:320px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;flex-direction:column;padding:18px;gap:12px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInRight 0.8s ease-out 0.4s both;
+      transition: all 0.3s ease;
+    }
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .mock::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.1), transparent);
+      animation: scan 3s infinite;
+    }
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    .mock:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 40px rgba(0,240,255,0.15);
+    }
     .mock .top{display:flex;justify-content:space-between;align-items:center}
     .mock .bars{display:flex;gap:8px}
-    .bar{height:6px;width:60px;background:linear-gradient(90deg,var(--accent),transparent);border-radius:6px}
-    .mock-screen{flex:1;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.02)}
+    .bar{
+      height:6px;width:60px;
+      background:linear-gradient(90deg,var(--accent),transparent);
+      border-radius:6px;
+      animation: barPulse 2s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.2s);
+    }
+    @keyframes barPulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.5); }
+    }
+    .mock-screen{
+      flex:1;border-radius:10px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+      position: relative;
+      overflow: hidden;
+    }
+    .mock-screen::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
+      animation: rotate 15s linear infinite;
+    }
 
     /* features */
-    .features{max-width:1200px;margin:26px auto;padding:0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .feature{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-    .feature h3{margin:0 0 8px}
-    .muted{color:var(--muted)}
+    .features{
+      max-width:1200px;margin:26px auto;padding:0 18px;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+    }
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 0.6s ease-out both;
+    }
+    .feature:nth-child(1) { animation-delay: 0.1s; }
+    .feature:nth-child(2) { animation-delay: 0.2s; }
+    .feature:nth-child(3) { animation-delay: 0.3s; }
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(124,58,237,0.1));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .feature:hover::before {
+      opacity: 1;
+    }
+    .feature:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: rgba(0,240,255,0.3);
+      box-shadow: 0 20px 40px rgba(0,240,255,0.15);
+    }
+    .feature h3{
+      margin:0 0 8px;
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s ease;
+    }
+    .feature:hover h3 {
+      color: var(--accent);
+    }
+    .feature p {
+      position: relative;
+      z-index: 1;
+    }
+    .muted{color:var(--muted); transition: color 0.3s ease;}
+    .feature:hover .muted {
+      color: #e6eef3;
+    }
 
     /* footer */
-    footer{max-width:1200px;margin:40px auto 60px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.02)}
+    footer{
+      max-width:1200px;margin:40px auto 60px;padding:18px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      display:flex;justify-content:space-between;align-items:center;
+      border:1px solid rgba(255,255,255,0.02);
+      animation: fadeIn 1s ease-out 0.8s both;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: footerLine 3s ease-in-out infinite;
+    }
+    @keyframes footerLine {
+      0%, 100% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 1; }
+    }
+    footer a {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    footer a:hover {
+      color: var(--accent);
+      transform: translateX(5px);
+    }
 
     /* responsive */
     @media (max-width:940px){
@@ -69,17 +405,182 @@
     }
 
     /* subtle animations */
-    .logo-glow{animation:glow 3s ease-in-out infinite}
-    @keyframes glow{0%{filter:drop-shadow(0 0 6px rgba(0,240,255,0.06))}50%{filter:drop-shadow(0 0 18px rgba(124,58,237,0.06))}100%{filter:drop-shadow(0 0 6px rgba(0,240,255,0.06))}}
+    .logo-glow{
+      animation:glow 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(0,240,255,0.3));
+    }
+    @keyframes glow{
+      0%{filter:drop-shadow(0 0 6px rgba(0,240,255,0.06)) brightness(1);}
+      50%{filter:drop-shadow(0 0 18px rgba(124,58,237,0.2)) brightness(1.2);}
+      100%{filter:drop-shadow(0 0 6px rgba(0,240,255,0.06)) brightness(1);}
+    }
 
-    .neon-text{background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .neon-text{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation: neonPulse 2s ease-in-out infinite;
+    }
+    @keyframes neonPulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.5); }
+    }
 
     /* small utility */
     .center{display:flex;align-items:center}
     .spaced{gap:12px}
+    
+    /* 滚动指示器 */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 50px;
+      border: 2px solid var(--accent);
+      border-radius: 25px;
+      opacity: 0.6;
+      animation: scrollBounce 2s infinite;
+      z-index: 100;
+    }
+    .scroll-indicator::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: scrollMove 2s infinite;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+    @keyframes scrollMove {
+      0% { top: 10px; opacity: 1; }
+      50% { top: 30px; opacity: 0.3; }
+      100% { top: 10px; opacity: 1; }
+    }
+    
+    /* 加载动画 */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Powered by 区域 */
+    .powered-by {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 28px 40px;
+      text-align: left;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+      animation: fadeIn 1s ease-out 1s both;
+    }
+    .powered-by::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 28px;
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      animation: poweredByLine 2s ease-in-out infinite;
+    }
+    @keyframes poweredByLine {
+      0%, 100% { opacity: 0.3; width: 100px; }
+      50% { opacity: 1; width: 150px; }
+    }
+    .powered-by-content {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+      line-height: 1.6;
+    }
+    .powered-by-text {
+      opacity: 0.7;
+      white-space: nowrap;
+      margin: 0;
+      padding: 0;
+    }
+    .powered-by-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 0;
+      margin: 0;
+      border-radius: 4px;
+      white-space: nowrap;
+      display: inline-block;
+      line-height: 1.6;
+    }
+    .powered-by-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.3s ease;
+      z-index: 0;
+    }
+    .powered-by-link:hover {
+      color: var(--accent-2);
+      text-shadow: 0 0 10px rgba(0,240,255,0.5);
+      transform: translateY(-2px);
+    }
+    .powered-by-link:hover::before {
+      width: 100%;
+    }
+    .powered-by-link::after {
+      content: ' →';
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin-left: 6px;
+      position: relative;
+      z-index: 1;
+      vertical-align: baseline;
+    }
+    .powered-by-link:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    /* 响应式改进 */
+    @media (max-width:940px){
+      .hero{grid-template-columns:1fr; animation: fadeInUp 0.8s ease-out;}
+      .features{grid-template-columns:repeat(1,1fr)}
+      nav{display:none}
+      .scroll-indicator { display: none; }
+      .powered-by {
+        padding: 20px 15px;
+      }
+    }
+    
+    /* 平滑过渡 */
+    * {
+      transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
   </style>
 </head>
 <body>
+  <!-- 背景粒子效果 -->
+  <div class="particles" id="particles"></div>
   <header>
     <div class="brand">
       <!-- Replace ./logo.png with your actual logo image file. -->
@@ -105,16 +606,24 @@
         <div class="hero-cta">
           <button class="btn" onclick="window.location.href='https://www.tkd.services'">开始使用</button>
         </div>
-
-        
-            
+      </div>
+      
+      <!-- Mock Panel -->
+      <div class="mock">
+        <div class="top">
+          <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
           </div>
-          
+        </div>
+        <div class="mock-screen">
+          <div style="text-align:center;color:var(--muted);font-size:14px">
+            <div style="font-size:24px;margin-bottom:8px">🚀</div>
+            <div>TKD Platform</div>
           </div>
         </div>
       </div>
-
-      
     </section>
 
     <section id="features" class="features">
@@ -145,13 +654,118 @@
       <a class="muted" href="https://t.me/TKD_Notice">联系我们</a>
     </div>
   </footer>
+  
+  <!-- Powered by -->
+  <div class="powered-by">
+    <div class="powered-by-content">
+      <span class="powered-by-text">Powered by</span>
+      <a href="https://www.tkd.services" target="_blank" class="powered-by-link" rel="noopener noreferrer">
+        @TKD Services
+      </a>
+    </div>
+  </div>
+
+  <!-- 滚动指示器 -->
+  <div class="scroll-indicator" id="scrollIndicator"></div>
 
   <script>
-    // small interactive touches
-    document.querySelectorAll('.btn').forEach(b=>{
-      b.addEventListener('mouseenter',()=>b.style.transform='translateY(-3px)');
-      b.addEventListener('mouseleave',()=>b.style.transform='translateY(0)');
-      b.style.transition='transform 160ms ease';
+    // 创建背景粒子
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // 滚动指示器控制
+    function handleScrollIndicator() {
+      const indicator = document.getElementById('scrollIndicator');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          indicator.style.opacity = '0';
+        } else {
+          indicator.style.opacity = '0.6';
+        }
+      });
+    }
+    
+    // Header 滚动效果
+    function handleHeaderScroll() {
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    }
+    
+    // 滚动动画观察器
+    function initScrollAnimations() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+            entry.target.style.opacity = '1';
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.feature').forEach(feature => {
+        observer.observe(feature);
+      });
+    }
+    
+    // 按钮交互增强
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px) scale(1.05)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+      btn.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+    
+    // 为 bar 元素添加动画延迟
+    document.querySelectorAll('.bar').forEach((bar, index) => {
+      bar.style.setProperty('--i', index);
+    });
+    
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      handleScrollIndicator();
+      handleHeaderScroll();
+      initScrollAnimations();
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
   </script>
 
