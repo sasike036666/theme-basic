@@ -22,10 +22,7 @@ useSeoMeta({
     <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
 
     <Head>
-<<<<<<< HEAD
 
-=======
->>>>>>> 28c057707b7e6a909b440e39f2dbd21fbe900ebd
       <template v-for="link in head.link" :key="link.id">
         <Link :id="link.id" :rel="link.rel" :href="link.href" :hreflang="link.hreflang" />
       </template>
