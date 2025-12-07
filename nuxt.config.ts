@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
-    idatariverMerchantSecret: '',
+    idatariverMerchantSecret: process.env.IDATARIVER_MERCHANT_SECRET || '',
     public: {
       idatariver: 'https://www.idatariver.com',
       idatariverServer: 'https://open.idatariver.com',
