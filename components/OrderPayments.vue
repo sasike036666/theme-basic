@@ -17,6 +17,7 @@ const composeOrderUrl = (method, id) => {
       <template v-for="payment in order.mPayments">
         <div v-if="payment.enabled && payment.method !== 'credits'">
           <a target="_blank" :href="composeOrderUrl(payment.method, order.id)"
+<<<<<<< HEAD
             class="flex font-bold rounded-md px-3 py-1.5 text-sm cursor-pointer bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
             <div class="text-left">
               <div class="font-bold text-sm cursor-pointer"
@@ -25,6 +26,16 @@ const composeOrderUrl = (method, id) => {
                 <span class="text-[11px] font-medium text-gray-800 dark:text-gray-200">{{ payment.desc }}</span>
               </div>
               <p v-if="payment.isPlatform" class="text-[11px] text-gray-800 dark:text-gray-300">
+=======
+            class="flex font-bold rounded-md px-3 py-1.5 text-sm cursor-pointer bg-gray-200 hover:bg-gray-300">
+            <div class="text-left">
+              <div class="font-bold text-sm cursor-pointer"
+                :class="[payment.isPlatform ? 'text-blue-600' : 'text-green-600']">
+                {{ paymentName(payment.name) }}
+                <span class="text-[11px] font-medium text-gray-800">{{ payment.desc }}</span>
+              </div>
+              <p v-if="payment.isPlatform" class="text-[11px] text-gray-800">
+>>>>>>> 28c057707b7e6a909b440e39f2dbd21fbe900ebd
                 <span v-if="payment.paymentFeeCovered">
                   + {{ $t('Payment_fee') }}: 0%
                 </span>
@@ -33,7 +44,11 @@ const composeOrderUrl = (method, id) => {
                   <span v-if="payment.fixedFeeRange">+{{ payment.fixedFeeRange }}</span>
                 </span>
               </p>
+<<<<<<< HEAD
               <p v-else class="text-[11px] text-gray-800 dark:text-gray-300">
+=======
+              <p v-else class="text-[11px] text-gray-800">
+>>>>>>> 28c057707b7e6a909b440e39f2dbd21fbe900ebd
                 + {{ $t('Payment_fee') }}: 0%
               </p>
             </div>
@@ -42,7 +57,11 @@ const composeOrderUrl = (method, id) => {
       </template>
     </div>
     <button v-else type="submit" disabled
+<<<<<<< HEAD
       class="w-full px-3 py-1.5 text-sm font-medium rounded-md bg-gray-300 dark:bg-gray-600 text-white dark:text-gray-400 cursor-not-allowed">
+=======
+      class="w-full px-3 py-1.5 text-sm font-medium rounded-md bg-gray-300 text-white cursor-not-allowed">
+>>>>>>> 28c057707b7e6a909b440e39f2dbd21fbe900ebd
       {{ $t('charge_btn') }}
     </button>
   </div>
