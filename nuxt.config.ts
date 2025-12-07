@@ -24,6 +24,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   nitro: { // 性能优化
     compressPublicAssets: true,
+    // Cloudflare Pages 适配器配置
+    preset: 'cloudflare-pages',
   },
   i18n: {
     vueI18n: './i18n.config.ts', // if you are using custom path, default 
